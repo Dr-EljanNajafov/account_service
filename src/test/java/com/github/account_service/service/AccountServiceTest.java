@@ -31,11 +31,6 @@ public class AccountServiceTest {
     @InjectMocks
     private AccountService accountService;
 
-    @BeforeEach
-    void setUp() {
-
-    }
-
     @Test
     void get_AccountNotFound_ShouldThrowException() {
         Mockito.when(accountRepository.findById(1L)).thenReturn(Optional.empty());
@@ -56,7 +51,7 @@ public class AccountServiceTest {
     private Account mockAccount() {
         return Account.builder()
                 .id(1L)
-                .ownerId(1L)
+                .userId(1L)
                 .number("123")
                 .status(AccountStatus.ACTIVE)
                 .type(AccountType.CURRENT_ACCOUNT)
@@ -68,7 +63,7 @@ public class AccountServiceTest {
     private AccountDto mockAccountDto() {
         return AccountDto.builder()
                 .id(1L)
-                .ownerId(1L)
+                .userId(1L)
                 .number("123")
                 .status(AccountStatus.ACTIVE)
                 .type(AccountType.CURRENT_ACCOUNT)
