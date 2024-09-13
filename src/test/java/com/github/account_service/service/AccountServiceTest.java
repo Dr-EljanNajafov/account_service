@@ -1,6 +1,6 @@
 package com.github.account_service.service;
 
-import com.github.account_service.dto.AccountDto;
+import com.github.account_service.dto.account.AccountDto;
 import com.github.account_service.model.Account;
 import com.github.account_service.model.AccountStatus;
 import com.github.account_service.model.AccountType;
@@ -8,13 +8,11 @@ import com.github.account_service.model.Currency;
 import com.github.account_service.repository.AccountRepository;
 import com.github.account_service.util.exceptionhandler.EntityNotFoundException;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;

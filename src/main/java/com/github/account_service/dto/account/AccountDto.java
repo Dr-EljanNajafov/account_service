@@ -1,4 +1,4 @@
-package com.github.account_service.dto;
+package com.github.account_service.dto.account;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.github.account_service.model.AccountStatus;
@@ -22,7 +22,7 @@ public class AccountDto {
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Long id;
 
-    @NotBlank(message = "Number is required")
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private String number;
 
     private Long userId;
