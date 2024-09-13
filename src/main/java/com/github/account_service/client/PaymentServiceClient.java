@@ -1,6 +1,7 @@
 package com.github.account_service.client;
 
 import com.github.account_service.dto.payment.PaymentRequest;
+import com.github.account_service.dto.payment.PaymentResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
