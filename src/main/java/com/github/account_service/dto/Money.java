@@ -1,9 +1,9 @@
 package com.github.account_service.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.github.account_service.model.Currency;
 
 import java.math.BigDecimal;
-import java.util.Currency;
 
 public record Money (
         @JsonProperty(value = "amount", required = true)

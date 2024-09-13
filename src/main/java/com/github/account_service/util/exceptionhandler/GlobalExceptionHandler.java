@@ -1,4 +1,4 @@
-package com.github.account_service.controller;
+package com.github.account_service.util.exceptionhandler;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
