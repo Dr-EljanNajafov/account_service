@@ -1,5 +1,9 @@
 package com.github.account_service.repository;
 
 
-public interface RequestRepository {
+
+import com.github.account_service.entity.Request;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface RequestRepository extends JpaRepository<Request, Long> {
 }
