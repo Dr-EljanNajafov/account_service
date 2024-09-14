@@ -1,14 +1,21 @@
 package com.github.account_service.model;
 
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
+@Getter
+@RequiredArgsConstructor
 public enum AccountType {
-    CURRENT_ACCOUNT, // расчетный счет
-    SAVINGS_ACCOUNT, // сберегательный счет
-    CORPORATE_ACCOUNT, // корпоративный счет
-    PERSONAL_ACCOUNT, // личный счет
-    JOINT_ACCOUNT, // совместный счет
-    FOREIGN_CURRENCY_ACCOUNT, // валютный счет
-    INVESTMENT_ACCOUNT, // инвестиционный счет
-    MERCHANT_ACCOUNT, // торговый счет
-    TRUST_ACCOUNT, // доверительный счет
-    ESCROW_ACCOUNT // счет эскроу
+    CURRENT_ACCOUNT("5200"),
+    SAVINGS_ACCOUNT("5236"),
+    CORPORATE_ACCOUNT("5300"),
+    PERSONAL_ACCOUNT("5400"),
+    JOINT_ACCOUNT("5500"),
+    FOREIGN_CURRENCY_ACCOUNT("5600"),
+    INVESTMENT_ACCOUNT("5700"),
+    MERCHANT_ACCOUNT("5800"),
+    TRUST_ACCOUNT("5900"),
+    ESCROW_ACCOUNT("6000");
+
+    private final String associatedString;
 }

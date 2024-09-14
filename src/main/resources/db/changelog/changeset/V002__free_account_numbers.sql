@@ -14,3 +14,15 @@ CREATE TABLE account_numbers_sequence
     current_count BIGINT NOT NULL DEFAULT 0
 );
 CREATE UNIQUE INDEX account_numbers_sequence_ind ON account_numbers_sequence (account_type, current_count);
+
+INSERT INTO account_numbers_sequence (account_type, current_count)
+VALUES (0, 0), -- CURRENT_ACCOUNT
+       (1, 0), -- SAVINGS_ACCOUNT
+       (2, 0), -- CORPORATE_ACCOUNT
+       (3, 0), -- PERSONAL_ACCOUNT
+       (4, 0), -- JOINT_ACCOUNT
+       (5, 0), -- FOREIGN_CURRENCY_ACCOUNT
+       (6, 0), -- INVESTMENT_ACCOUNT
+       (7, 0), -- MERCHANT_ACCOUNT
+       (8, 0), -- TRUST_ACCOUNT
+       (9, 0); -- ESCROW_ACCOUNT
