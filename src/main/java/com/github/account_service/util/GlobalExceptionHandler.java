@@ -1,14 +1,13 @@
 package com.github.account_service.util;
 
 import com.github.account_service.util.exception.DataValidationException;
-import com.github.account_service.util.exceptionhandler.EntityNotFoundException;
+import com.github.account_service.util.exception.EntityNotFoundException;
 import feign.FeignException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -24,7 +23,6 @@ public class GlobalExceptionHandler {
 
         return ResponseEntity.badRequest().body(ex.getMessage());
     }
-
 
     @ExceptionHandler(DataValidationException.class)
     public ResponseEntity<Object> handleInvalidFieldException(DataValidationException ex) {
