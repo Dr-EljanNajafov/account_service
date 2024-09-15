@@ -1,17 +1,18 @@
 package com.github.account_service.dto.account;
 
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.github.account_service.model.AccountStatus;
 import com.github.account_service.model.AccountType;
 import com.github.account_service.model.Currency;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
+
+import java.time.Instant;
 
 @Data
 @AllArgsConstructor
@@ -39,13 +40,13 @@ public class AccountDto {
     private AccountStatus status;
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    private LocalDateTime createdAt;
+    private Instant createdAt;
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    private LocalDateTime updatedAt;
+    private Instant updatedAt;
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    private LocalDateTime closedAt;
+    private Instant closedAt;
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private long version;

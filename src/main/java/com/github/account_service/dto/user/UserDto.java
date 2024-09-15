@@ -1,4 +1,4 @@
-package com.github.account_service.user;
+package com.github.account_service.dto.user;
 
 
 import com.github.account_service.dto.country.CountryDto;

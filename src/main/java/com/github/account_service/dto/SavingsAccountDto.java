@@ -1,13 +1,14 @@
 package com.github.account_service.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.validation.constraints.NotEmpty;
+import com.github.account_service.model.Currency;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Data
@@ -19,8 +20,15 @@ public class SavingsAccountDto {
     private Long id;
     @NotNull(message = "accountId cannot be null")
     private Long accountId;
+    @NotNull(message = "user id cannot be null")
+    private Long userId;
+    @NotNull(message = "currency cannot be null")
+    private Currency currency;
+    private BigDecimal balance;
     @NotNull(message = "current tariff cannot be null")
-    private Long current_tariff;
+    private Long currentTariff;
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private TariffDto tariffDto;
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private String tariffHistory;
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
@@ -29,5 +37,6 @@ public class SavingsAccountDto {
     private LocalDateTime createdAt;
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private LocalDateTime updatedAt;
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Long version;
 }
