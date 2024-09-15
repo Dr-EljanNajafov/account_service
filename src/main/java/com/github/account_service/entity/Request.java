@@ -2,6 +2,7 @@ package com.github.account_service.entity;
 
 import com.github.account_service.enums.RequestStatus;
 import com.github.account_service.enums.RequestType;
+import com.github.account_service.util.MapToJsonConverter;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -14,6 +15,8 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Map;
+import java.util.UUID;
 
 @Data
 @NoArgsConstructor
@@ -23,7 +26,7 @@ import java.time.LocalDateTime;
 @Table(name = "request")
 public class Request {
     @Id
-    private long id;
+    private UUID idempotentToken;
 
     @Column(name = "idempotency_key", nullable = false)
     private String idempotencyKey;
@@ -42,6 +45,10 @@ public class Request {
 
     @Column(name = "text", nullable = false)
     private String data;
+
+    @Column(name = "input_data")
+    @Convert(converter = MapToJsonConverter.class)
+    private Map<String, Object> input_data;
 
     @Enumerated(EnumType.STRING)
     private RequestType requestType;
