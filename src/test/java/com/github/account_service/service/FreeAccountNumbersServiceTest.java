@@ -12,13 +12,10 @@ import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.PostgreSQLContainer;
 
-
 @SpringBootTest
 public class FreeAccountNumbersServiceTest {
-
     @Autowired
     FreeAccountNumbersService freeAccountNumbersService;
-
     @Autowired
     FreeAccountNumberRepository freeAccountNumberRepository;
 
@@ -43,11 +40,10 @@ public class FreeAccountNumbersServiceTest {
         registry.add("spring.datasource.password", postgres::getPassword);
     }
 
-
     @Test
     void GenerateAccountNumberTest() {
-        freeAccountNumbersService.generateAccountNumber(AccountType.DEBIT);
-        var number = freeAccountNumberRepository.findByAccountType(AccountType.DEBIT);
+        freeAccountNumbersService.generateAccountNumber(AccountType.CURRENT_ACCOUNT);
+        var number = freeAccountNumberRepository.findByAccountType(AccountType.CURRENT_ACCOUNT);
         Assertions.assertTrue(number.isPresent());
     }
 }

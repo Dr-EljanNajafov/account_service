@@ -10,7 +10,7 @@ import com.github.account_service.model.AccountType;
 import com.github.account_service.model.Currency;
 import com.github.account_service.repository.AccountRepository;
 import com.github.account_service.util.exception.DataValidationException;
-import com.github.account_service.util.exceptionhandler.EntityNotFoundException;
+import com.github.account_service.util.exception.EntityNotFoundException;
 import com.github.account_service.util.validator.AccountOwnerChecker;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -28,9 +28,6 @@ class AccountServiceTest {
 
     @Mock
     private AccountRepository accountRepository;
-
-//    @Spy
-//    private AccountMapperImpl accountMapper;
 
     @Mock
     private UserServiceClient userServiceClient;
@@ -98,7 +95,7 @@ class AccountServiceTest {
                 .userId(1L)
                 .number("123456789012345")
                 .status(AccountStatus.ACTIVE)
-                .type(AccountType.DEBIT)
+                .type(AccountType.CURRENT_ACCOUNT)
                 .currency(Currency.USD)
                 .version(1L)
                 .build();
@@ -110,7 +107,7 @@ class AccountServiceTest {
                 .userId(1L)
                 .number("123456789012345")
                 .status(AccountStatus.ACTIVE)
-                .type(AccountType.DEBIT)
+                .type(AccountType.CURRENT_ACCOUNT)
                 .currency(Currency.USD)
                 .version(1L)
                 .build();
