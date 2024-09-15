@@ -1,8 +1,9 @@
 package com.github.account_service.enums;
 
+
 public enum RequestStatus {
-    COMPLETE,
+    NEW,
     PENDING,
-    DONE,
-    CANCELED
+    SUCCESS,
+    FAILED
 }

@@ -3,17 +3,15 @@ package com.github.account_service.entity;
 import com.github.account_service.enums.RequestStatus;
 import com.github.account_service.enums.RequestType;
 import com.github.account_service.util.MapToJsonConverter;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-import jakarta.persistence.*;
+
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.UUID;
@@ -34,32 +32,23 @@ public class Request {
     @Column(name = "user_id", nullable = false)
     private Long userId;
 
-    @Column(name = "idempotency_key", nullable = false)
-    private String idempotencyKey;
-
-    @Column(name = "username", nullable = false)
-    private String userName;
-
     @Enumerated(EnumType.STRING)
     private RequestStatus requestStatus;
 
     @Column(name = "lock_value", nullable = false)
-    private Long lockValue;
+    private String lockValue;
 
     @Column(name = "active", nullable = false)
     private boolean active;
 
-    @Column(name = "text", nullable = false)
-    private String data;
-
     @Column(name = "input_data")
     @Convert(converter = MapToJsonConverter.class)
-    private Map<String, Object> input_data;
+    private Map<String, Object> inputData;
 
     @Enumerated(EnumType.STRING)
     private RequestType requestType;
 
-    @Column(name = "details")
+    @Column(name = "status_details")
     private String details;
 
     @CreationTimestamp
@@ -70,9 +59,8 @@ public class Request {
     @UpdateTimestamp
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
+    private Instant updatedAt;
 
     @Column(name = "version", nullable = false)
     private Long version;
-
 }
