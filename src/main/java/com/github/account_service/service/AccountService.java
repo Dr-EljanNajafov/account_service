@@ -5,6 +5,7 @@ import com.github.account_service.mapper.AccountMapper;
 import com.github.account_service.model.Account;
 import com.github.account_service.repository.AccountRepository;
 import com.github.account_service.util.exceptionhandler.EntityNotFoundException;
+import com.github.account_service.util.validator.AccountOwnerChecker;
 import com.github.account_service.util.validator.AccountServiceValidator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,6 +21,7 @@ public class AccountService {
     private final AccountRepository accountRepository;
     private final AccountMapper accountMapper;
     private final AccountServiceValidator accountServiceValidator;
+    private final AccountOwnerChecker accountOwnerChecker;
 
     public AccountDto get(Long id) {
         Account foundAccount =getAccountById(id);
@@ -33,7 +35,7 @@ public class AccountService {
 
     @Transactional
     public AccountDto create(AccountDto dto) {
-        accountServiceValidator.validateToCreate(dto);
+        accountOwnerChecker.validateToCreate(dto);
 
         Account account = accountMapper.toEntity(dto);
 

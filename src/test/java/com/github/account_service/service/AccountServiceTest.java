@@ -10,6 +10,7 @@ import com.github.account_service.model.Currency;
 import com.github.account_service.repository.AccountRepository;
 import com.github.account_service.util.exception.DataValidationException;
 import com.github.account_service.util.exceptionhandler.EntityNotFoundException;
+import com.github.account_service.util.validator.AccountOwnerChecker;
 import com.github.account_service.util.validator.AccountServiceValidator;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -28,9 +29,8 @@ public class AccountServiceTest {
     @Mock
     private AccountRepository accountRepository;
 
-//    @Spy
-//    private AccountMapperImpl accountMapper;
-
+    @Spy
+    private AccountOwnerChecker accountOwnerChecker = new AccountOwnerChecker(userServiceClient, projectServiceClient);
     @Mock
     private UserServiceClient userServiceClient;
 
@@ -84,8 +84,7 @@ public class AccountServiceTest {
 
     @Test
     void create_RequestHasOnlyOneOwner_ShouldMapCorrectlyAndSave() {
-        Mockito.doNothing().when(accountServiceValidator).validateToCreate(mockAccountDto());
-
+        Mockito.doNothing().when(accountOwnerChecker).validateToCreate(mockAccountDto());
         accountService.create(mockAccountDto());
 
         Mockito.verify(accountRepository).save(mockAccount());
