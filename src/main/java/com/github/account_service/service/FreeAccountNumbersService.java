@@ -1,7 +1,5 @@
 package com.github.account_service.service;
 
-
-
 import com.github.account_service.model.AccountType;
 import com.github.account_service.model.FreeAccountNumber;
 import com.github.account_service.repository.AccountNumberSequenceRepository;
@@ -9,7 +7,6 @@ import com.github.account_service.repository.FreeAccountNumberRepository;
 import com.github.account_service.util.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.retry.annotation.Backoff;
 import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
@@ -24,12 +21,11 @@ public class FreeAccountNumbersService {
     private final FreeAccountNumberRepository freeAccountNumberRepository;
     private final AccountNumberSequenceRepository accountNumberSequenceRepository;
 
-
     @Transactional
-    @Retryable(value = {RuntimeException.class}, maxAttempts = 3, backoff = @Backoff(delay = 1000))
+    @Retryable(maxAttempts = 5, backoff = @Backoff(delay = 3000)) // Не рабоатет
     public void generateAccountNumber(AccountType accountType) {
         var sequence = accountNumberSequenceRepository.findByAccountType(accountType).orElseThrow(
-                () -> new ChangeSetPersister.NotFoundException("No such account type found")
+                () -> new NotFoundException("No such account type found")
         );
         Long currentCount = accountNumberSequenceRepository.incrementCurrentCount(sequence.getAccountType().ordinal(), sequence.getCurrentCount())
                 .orElseThrow(
@@ -40,11 +36,14 @@ public class FreeAccountNumbersService {
                         }
                 );
         String accountNumber = String.format("%s%08d", accountType.getAssociatedString(), currentCount);
-        FreeAccountNumber freeAccountNumber = FreeAccountNumber.builder().accountType(accountType).accountNumber(accountNumber).build();
+        FreeAccountNumber freeAccountNumber = FreeAccountNumber.builder()
+                .accountType(accountType)
+                .accountNumber(accountNumber)
+                .build();
         freeAccountNumberRepository.save(freeAccountNumber);
     }
 
-    @Transactional
+    @Retryable(maxAttempts = 5)
     public void perform(AccountType accountType, Consumer<String> action) {
         var freeNumber = freeAccountNumberRepository.getAccountNumber(accountType.ordinal())
                 .orElseGet(() -> {

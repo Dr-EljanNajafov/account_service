@@ -2,12 +2,15 @@ package com.github.account_service.service;
 
 import com.github.account_service.dto.RequestDto;
 import com.github.account_service.entity.Request;
+import com.github.account_service.enums.RequestStatus;
 import com.github.account_service.mapper.RequestMapper;
 import com.github.account_service.repository.RequestRepository;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -17,29 +20,64 @@ public class RequestService {
     private final RequestRepository repository;
     private final RequestMapper requestMapper;
 
-    public RequestDto getRequest(RequestDto requestDto) {
-        Optional<Request> requestById = repository.findById(requestDto.getRequestId());
+    public RequestDto getRequest(long id) {
+        Optional<Request> requestById = repository.findById(id);
         validateRequest(requestById);
         return requestMapper.toDto(requestById.get());
     }
 
-    public RequestDto getOrSaveRequest(RequestDto requestDto, Long requestId) {
-        Optional<Request> requestById = repository.findById(requestId);
-        if (requestById.isEmpty()) {
-            Request request = requestMapper.toEntity(requestDto);
-            repository.save(request);
-            return requestMapper.toDto(request);
+    @Transactional
+    public RequestDto getOrSaveRequest(Request request) {
+        Request requestBuild = getRequest(request);
+        Optional<Request> requestById = repository.findById(requestBuild.getId());
+        if (requestById.isPresent()) {
+            validateInputData(requestBuild, requestById);
+            return requestMapper.toDto(requestById.get());
         }
-        return requestMapper.toDto(requestById.get());
+        repository.save(requestBuild);
+        return requestMapper.toDto(requestBuild);
     }
 
-    public RequestDto changeStatus(RequestDto requestDto) {
-        Optional<Request> requestById = repository.findById(requestDto.getRequestId());
+    private void validateInputData(Request requestBuild, Optional<Request> requestById) {
+        Map<String, Object> inputData = requestBuild.getInputData();
+        Map<String, Object> inputDataDB = requestById.get().getInputData();
+        if(!inputData.equals(inputDataDB)) {
+            throw new Error("409");
+        }
+    }
+
+
+    @Transactional
+    public RequestDto changeStatus(Request request) {
+        Request requestBuild = getRequest(request);
+        Optional<Request> requestById = repository.findById(requestBuild.getId());
         validateRequest(requestById);
-        Request request = requestById.get();
-        request.setRequestStatus(requestDto.getRequestStatus());
+        if (request.getRequestStatus() == RequestStatus.FAILED) {
+            request.setActive(false);
+        }
+        request.setRequestStatus(request.getRequestStatus());
+        request.setDetails(request.getDetails());
         repository.save(request);
         return requestMapper.toDto(request);
+    }
+
+    protected Request build(RequestDto requestDto) {
+        return Request.builder()
+                .id(requestDto.getRequestId())
+                .userId(requestDto.getUserId())
+                .lockValue(requestDto.getLockValue())
+                .active(requestDto.isActive())
+                .details(requestDto.getDetails())
+                .version(requestDto.getVersion())
+                .requestType(requestDto.getRequestType())
+                .requestStatus(requestDto.getRequestStatus())
+                .inputData(requestDto.getInputData())
+                .build();
+    }
+
+    private Request getRequest(Request request) {
+        RequestDto requestDto = requestMapper.toDto(request);
+        return build(requestDto);
     }
 
     private void validateRequest(Optional<Request> requestById) {
