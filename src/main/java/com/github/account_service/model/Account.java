@@ -62,4 +62,7 @@ public class Account {
     @Version
     @Column(name = "version", nullable = false)
     private long version;
+
+    @OneToOne(mappedBy = "account")
+    private Balance balance;
 }
