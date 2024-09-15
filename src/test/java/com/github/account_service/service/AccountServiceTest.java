@@ -1,5 +1,6 @@
 package com.github.account_service.service;
 
+
 import com.github.account_service.client.ProjectServiceClient;
 import com.github.account_service.client.UserServiceClient;
 import com.github.account_service.dto.account.AccountDto;
@@ -11,7 +12,6 @@ import com.github.account_service.repository.AccountRepository;
 import com.github.account_service.util.exception.DataValidationException;
 import com.github.account_service.util.exceptionhandler.EntityNotFoundException;
 import com.github.account_service.util.validator.AccountOwnerChecker;
-import com.github.account_service.util.validator.AccountServiceValidator;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -24,13 +24,14 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.Optional;
 
 @ExtendWith(MockitoExtension.class)
-public class AccountServiceTest {
+class AccountServiceTest {
 
     @Mock
     private AccountRepository accountRepository;
 
-    @Spy
-    private AccountOwnerChecker accountOwnerChecker = new AccountOwnerChecker(userServiceClient, projectServiceClient);
+//    @Spy
+//    private AccountMapperImpl accountMapper;
+
     @Mock
     private UserServiceClient userServiceClient;
 
@@ -38,7 +39,7 @@ public class AccountServiceTest {
     private ProjectServiceClient projectServiceClient;
 
     @Spy
-    private AccountServiceValidator accountServiceValidator = new AccountServiceValidator(userServiceClient, projectServiceClient);
+    private AccountOwnerChecker accountOwnerChecker = new AccountOwnerChecker(userServiceClient, projectServiceClient);
 
     @InjectMocks
     private AccountService accountService;
@@ -85,6 +86,7 @@ public class AccountServiceTest {
     @Test
     void create_RequestHasOnlyOneOwner_ShouldMapCorrectlyAndSave() {
         Mockito.doNothing().when(accountOwnerChecker).validateToCreate(mockAccountDto());
+
         accountService.create(mockAccountDto());
 
         Mockito.verify(accountRepository).save(mockAccount());
@@ -96,7 +98,7 @@ public class AccountServiceTest {
                 .userId(1L)
                 .number("123456789012345")
                 .status(AccountStatus.ACTIVE)
-                .type(AccountType.CURRENT_ACCOUNT)
+                .type(AccountType.DEBIT)
                 .currency(Currency.USD)
                 .version(1L)
                 .build();
@@ -108,7 +110,7 @@ public class AccountServiceTest {
                 .userId(1L)
                 .number("123456789012345")
                 .status(AccountStatus.ACTIVE)
-                .type(AccountType.CURRENT_ACCOUNT)
+                .type(AccountType.DEBIT)
                 .currency(Currency.USD)
                 .version(1L)
                 .build();

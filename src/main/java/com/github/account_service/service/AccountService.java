@@ -20,7 +20,6 @@ public class AccountService {
 
     private final AccountRepository accountRepository;
     private final AccountMapper accountMapper;
-    private final AccountServiceValidator accountServiceValidator;
     private final AccountOwnerChecker accountOwnerChecker;
 
     public AccountDto get(Long id) {
