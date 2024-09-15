@@ -28,6 +28,9 @@ public class Request {
     @Id
     private UUID idempotentToken;
 
+    @Column(name = "user_id", nullable = false)
+    private Long userId;
+
     @Column(name = "idempotency_key", nullable = false)
     private String idempotencyKey;
 
