@@ -1,21 +1,20 @@
 package com.github.account_service.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.util.List;
 
-@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Entity
+@Getter
+@Setter
 @Table(name = "balances")
 public class Balance {
 
@@ -32,6 +31,9 @@ public class Balance {
 
     @Column(name = "actual_balance", nullable = false)
     private BigDecimal actualBalance;
+
+    @OneToMany(mappedBy = "balance", fetch = FetchType.LAZY)
+    private List<BalanceHistory> history;
 
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
