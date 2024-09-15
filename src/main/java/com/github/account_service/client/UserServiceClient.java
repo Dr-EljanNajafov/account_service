@@ -1,6 +1,6 @@
 package com.github.account_service.client;
 
-import com.github.account_service.user.UserDto;
+import com.github.account_service.dto.user.UserDto;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
